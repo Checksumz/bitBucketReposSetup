@@ -2,6 +2,7 @@ package main.java.bitBucketReposSetup.JsonToJavaObjPojo;
 
 public class Clone {
 	private String href;
+	private String name;
 
 	public String getHref() {
 		return href;
@@ -9,5 +10,13 @@ public class Clone {
 
 	public void setHref(String href) {
 		this.href = href;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

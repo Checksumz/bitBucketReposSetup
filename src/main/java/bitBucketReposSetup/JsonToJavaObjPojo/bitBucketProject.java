@@ -19,14 +19,7 @@ public class bitBucketProject {
 	private int start;
 	private int nextPageStart;
 	
-//	@JsonUnwrapper
-//    public void writeName(JsonStream stream) throws IOException {
-//        stream.writeObjectField("firstName");
-//        stream.writeVal(name.getFirstName());
-//        stream.writeMore();
-//        stream.writeObjectField("lastName");
-//        stream.writeVal(name.getLastName());
-//    }
+
 	
 	public int getSize() {
 		return size;

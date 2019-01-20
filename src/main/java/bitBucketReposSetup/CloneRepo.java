@@ -1,4 +1,4 @@
-package bitBucketReposSetup;
+package main.java.bitBucketReposSetup;
 
 import java.io.File;
 
@@ -10,6 +10,7 @@ public class CloneRepo {
 
 	public void cloneFullRepo(String repoName, String repoUri, String userName, String pwd, String localDirectoryPath) {
 		
+// clone repos below
 		
 		try {
 			Git.cloneRepository().setURI(repoUri).setCredentialsProvider(new UsernamePasswordCredentialsProvider(userName, pwd)).setDirectory(new File(localDirectoryPath))

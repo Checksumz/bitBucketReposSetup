@@ -11,17 +11,17 @@ public class Values {
 	private String scmId;
 	private String state;
 	private String statusMessage;
-	private String forkable;
+	private boolean forkable;
 	private Project project; 
 	private String publicDescriptor;
-	
+	private Links links;
 	private String repoName;
 	String repoDesc;
 //	String repoCloneUrlHttp;
 //	String repoCloneUrlSsh;
 	String repoPrivacy;
 	String repoForkable;
-	Map<String, String> RepoCloneUrl= new HashMap<>();
+	
 //	String repoCloneUrlSsh;
 	//String repoName;
 	
@@ -37,18 +37,8 @@ public class Values {
 	public void setRepoDesc(String repoDesc) {
 		this.repoDesc = repoDesc;
 	}
-	public String getRepoCloneUrl(String connString) {		
-		return RepoCloneUrl.get(connString);
-	}
-	public void setRepoCloneUrl(String connType,String repoCloneUrl) {
-		this.RepoCloneUrl.put(connType, repoCloneUrl);		
-	}
-//	protected String getRepoCloneUrlSsh() {
-//		return repoCloneUrlSsh;
-//	}
-//	protected void setRepoCloneUrlSsh(String repoCloneUrlSsh) {
-//		this.repoCloneUrlSsh = repoCloneUrlSsh;
-//	}
+
+
 
 	public void cloneRepo() {
 		
@@ -89,12 +79,7 @@ public class Values {
 	public void setStatusMessage(String statusMessage) {
 		this.statusMessage = statusMessage;
 	}
-	public String getForkable() {
-		return forkable;
-	}
-	public void setForkable(String forkable) {
-		this.forkable = forkable;
-	}
+
 	public Project getProjectDetails() {
 		return project;
 	}
@@ -113,12 +98,7 @@ public class Values {
 	public void setRepoForkable(String repoForkable) {
 		this.repoForkable = repoForkable;
 	}
-	public Map<String, String> getRepoCloneUrl() {
-		return RepoCloneUrl;
-	}
-	public void setRepoCloneUrl(Map<String, String> repoCloneUrl) {
-		RepoCloneUrl = repoCloneUrl;
-	}
+
 	public Project getProject() {
 		return project;
 	}
@@ -130,5 +110,17 @@ public class Values {
 	}
 	public void setPublicDescriptor(String publicDescriptor) {
 		this.publicDescriptor = publicDescriptor;
+	}
+	public boolean isForkable() {
+		return forkable;
+	}
+	public void setForkable(boolean forkable) {
+		this.forkable = forkable;
+	}
+	public Links getLinks() {
+		return links;
+	}
+	public void setLinks(Links links) {
+		this.links = links;
 	}
 }

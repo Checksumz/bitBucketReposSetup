@@ -1,4 +1,4 @@
-package bitBucketReposSetup;
+package main.java.bitBucketReposSetup;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,144 +14,86 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.jsoniter.JsonIterator;
 
-//import org.json.simple.JSONArray;
-//import org.json.simple.JSONObject;
-//import org.json.simple.parser.JSONParser;
-//import org.json.simple.parser.ParseException;
+import main.java.bitBucketReposSetup.JsonToJavaObjPojo.Values;
+import main.java.bitBucketReposSetup.JsonToJavaObjPojo.bitBucketProject;
+
+
 
 public class BitBucketReposSetup {
 
-	
-	public static void main(String[] args) throws IOException {
+    private static final Logger logger = LogManager.getLogger(BitBucketReposSetup.class);
+    
+	public static void main(String[] args)  {
 		// TODO Auto-generated method stub
 		
-		//Scanner in = new Scanner(System.in);
-		String uid;
-		String pwd;
-		String LocalRepoDir;
-		URL url;
-		
-		try(Scanner in = new Scanner(System.in)){
-			System.out.println("Please enter root url of bitBucket server:");		
-			//ReadableByteChannel in= Channels.newChannel(System.in);
-			String repoRootURL=in.next();
-			System.out.println("Please enter name of bitBucket Project :");
-			//String bitBucketProjName= Channels.newChannel(System.in).toString();
-			String bitBucketProjName= in.next();
-			 url = new URL(repoRootURL+"/rest/api/1.0/projects/"+bitBucketProjName+"/repos");
 
-			 System.out.println("Please enter name of local dir to create/update the local copy(eg:C:\\Users\\reposTest\\):");
-			 LocalRepoDir=in.next();
-			 System.out.println("Please enter your bitBucket username:");
-			 uid=in.next();
-			 System.out.println("Please enter your bitBucket pwd:");
-			 pwd=in.next();
-		}
 
+//Obtain user input 
+		userInput input= new userInput();
+		input.getUserInput();
 		
 		String reqMthd="GET";
 		String jsonRepoList="";		
 		HttpURLConnection conn =null;
 		ConnectionFactory connFact= new ConnectionFactory();
-		conn = connFact.createHttpConnectionBitBucket(url, uid, pwd, reqMthd);
-		
-		
-		
-
-		
-	String output;
+		conn = connFact.createHttpConnectionBitBucket(input.getUrl(),
+				input.getUid(), input.getPwd(), reqMthd);
+		String output;
 			
-				BufferedReader	br = new BufferedReader(new InputStreamReader(conn.getInputStream()));		
-			//Scanner sc = new Scanner(url.openStream());
-//				JSONParser jParse = new JSONParser();
-				
-//				while(br.readLine()!=null){
-//					
-//				}
-				
-			while ((output=br.readLine())!=null) {
-				//System.out.println("output:"+output);
-//				jsonRepoList+=sc.nextLine();
-				jsonRepoList+=output;
+				BufferedReader br;
+				try {
+					br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+				while ((output=br.readLine())!=null) {
+					jsonRepoList+=output;
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				logger.error(e.getStackTrace());
+				e.printStackTrace();
 			}
 			
-	      
-			
-			//JSONObject jsonBitBucketReposListObj=null;
-			
-//				jsonBitBucketReposListObj = (JSONObject)jParse.parse(jsonRepoList);
-				Values repo = JsonIterator.deserialize(jsonRepoList, Values.class);
+			logger.info("Bitbucket JSON obj \n"+jsonRepoList);
+//	  Deserialize Bitbucket JSON object to Java POJO   
+//  	used JSON iterator since it is the fastest JSON parsing library
+//			
 				bitBucketProject proj = JsonIterator.deserialize(jsonRepoList, bitBucketProject.class);
+				
 				System.out.println("proj.getLimit() "+proj.getLimit());
-				System.out.println("repo.getRepoDesc() "+repo.getRepoDesc());
-				System.out.println("proj.getValues().get(1).getName() "+proj.getValues().toString());
+				System.out.println("proj.getValues().length "+proj.getValues().length);
+				System.out.println("proj.getValues().get(1).getName() "+proj.getValues()[1].getName());
 				
-				//System.out.println("jsonBitBucketReposListObj "+jsonBitBucketReposListObj);
+
+
+			for(int i=0;i<proj.getValues().length;i++) {
+				
+				String repoName = proj.getValues()[i].getName();
+				String projName = proj.getValues()[i].getProject().getKey();
+				String cloneUrl = proj.getValues()[i].getLinks().getRepoCloneUrl("http");
 			
-			
-			//System.out.println("ouside ty catch jsonBitBucketReposListObj "+jsonBitBucketReposListObj);
-//			JSONArray reposListArray= (JSONArray)jsonBitBucketReposListObj.get("values");
-//			
-//	
-//			JSONObject jRepoObj = (JSONObject) reposListArray.stream().collect(Collectors.toMap("",""))
-//					//filter( jRepoObj -> ((JSONObject)jRepoObj).get("project").);
-//			
-			
-			
-			
-			
-			//pri
-//			reposListArray.stream<JSONObject>().filter(jRepoObj -> jRepoObj.get("project")).
-//			filter(jProjObj -> jProjObj.get("key")).forEach(jProjNameObj -> {
-//				System.out.println(jProjNameObj);
-//				
-//			});
-				Values r=new Values();
-				bitBucketProject bBP= new bitBucketProject();
-				
-			Map<String, Values> repoMAp= new HashMap<String, Values>();
-		//	reposListArray.get(1).
-			//System.err.println(reposListArray.size());
-/*			
-			for(int i=0;i<reposListArray.size();i++) {
-				Repos r=new Repos();
-				bitBucketProject bBP= new bitBucketProject();
-				JSONObject jRepoObj = (JSONObject)reposListArray.get(i);
-				r.setRepoName(jRepoObj.get("name").toString());				
-				//System.out.println(jRepoObj.get("name"));		
-				
-				JSONObject jProjObj = (JSONObject)jRepoObj.get("project");
-				bBP.setProjectName(jProjObj.get("key").toString());
-				//System.out.println(jProjObj.get("key"));
-				JSONObject jLinksObj = (JSONObject)jRepoObj.get("links");
-				
-				JSONArray jCloneLinksArray = (JSONArray) jLinksObj.get("clone");
-				
-				//((JSONObject)jCloneLinksArray.get(0)).get("href");
-				
-				
-				for(int j=0;j<jCloneLinksArray.size();j++) {
-					JSONObject jCloneLinksObj= (JSONObject)jCloneLinksArray.get(j);
-					r.setRepoCloneUrl(jCloneLinksObj.get("name").toString(), jCloneLinksObj.get("href").toString());					
-					
-				}
-*/				
-				System.out.println("Creating local repo:"+r.getRepoName());
+				logger.info(repoName);
 //				CloneRepo cR=new CloneRepo();
 //				cR.cloneFullRepo(r.getRepoName(), r.getRepoCloneUrl("http"), uid, pwd, LocalRepoDir+bBP.getProjectName()+"\\"+r.getRepoName());
 				
-				PullRepos pR= new PullRepos();
-				pR.pullLatestRepoVer(r.getRepoName(), r.getRepoCloneUrl("http"), uid, pwd, LocalRepoDir+"\\"+bBP.getProjectName()+"\\"+r.getRepoName()+"\\"+".git");
+				PullRepos pR= new PullRepos();			
+				pR.pullLatestRepoVer(repoName, cloneUrl,
+						input.getUid(), input.getPwd(), 
+						input.getLocalRepoDir()+"\\"+projName+"\\"+repoName+"\\"+".git");
+				
+				
 				//System.out.println(System.getProperty("user.dir"));
-				System.out.println("Finished creating local repo:"+r.getRepoName());
+				System.out.println("Finished creating local repo: "+repoName);
 
 				
 					
 				
 					
-	//		}
+			}
 			
 		
 			connFact.closeConnections(conn);

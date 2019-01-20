@@ -15,42 +15,91 @@ public class userInput {
 
 	private String uid;
 	private String pwd;
-	private String LocalRepoDir;
-	private String url;
-	HashMap<String, String> userInput;
+	private String localRepoDir;
+	private String repoRootURL;
+	private URL url;
+	
 	
     private static final Logger logger = LogManager.getLogger(userInput.class);
     
-	public Map<String, String> getUserInput() {
+	public userInput getUserInput() {
 		
 		try(Scanner in = new Scanner(System.in)){
+
+			//get user details
+					 
 			System.out.println("Please enter root url of bitBucket server:");		
 			//ReadableByteChannel in= Channels.newChannel(System.in);
-			String repoRootURL=in.next();
-			userInput.put("repoRootURL", repoRootURL);
+			String repoRootURL= in.nextLine();
+			this.setRepoRootURL(repoRootURL);
+			
 			System.out.println("Please enter name of bitBucket Project :");
-			//String bitBucketProjName= Channels.newChannel(System.in).toString();
-			String bitBucketProjName= in.next();
-			 //url = new URL(repoRootURL+"/rest/api/1.0/projects/"+bitBucketProjName+"/repos");
-			 userInput.put("url", url);
+
+			String bitBucketProjName= in.nextLine();
+			 url = new URL(repoRootURL+"/rest/api/1.0/projects/"+bitBucketProjName+"/repos");
+			 this.setUrl(url);
 			 System.out.println("Please enter name of local dir to create/update the local copy(eg:C:\\Users\\reposTest\\):");
-			 LocalRepoDir=in.next();
-			 userInput.put("LocalRepoDir", LocalRepoDir);
+			 localRepoDir=in.nextLine();
+			 this.setLocalRepoDir(localRepoDir);
+			 
 			 System.out.println("Please enter your bitBucket username:");
-			 uid=in.next();
-			 userInput.put("uid", uid);
+			 uid=in.nextLine();
+			 this.setUid(uid);
+			 
 			 System.out.println("Please enter your bitBucket pwd:");
-			 pwd=in.next();
-			 userInput.put("pwd", pwd);
+			 pwd=in.nextLine();
+			 this.setPwd(pwd);
 			 
 			 
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			 
+		} catch (MalformedURLException e) {
+			
 			logger.debug(e.getMessage());
 		}
-		return userInput;
+		return this;
 	}
-	
+
+	public String getUid() {
+		return uid;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
+
+	public String getPwd() {
+		return pwd;
+	}
+
+	public void setPwd(String pwd) {
+		this.pwd = pwd;
+	}
+
+	public String getLocalRepoDir() {
+		return localRepoDir;
+	}
+
+	public void setLocalRepoDir(String localRepoDir) {
+		this.localRepoDir = localRepoDir;
+	}
+
+	public URL getUrl() {
+		return url;
+	}
+
+	public void setUrl(URL url) {
+		this.url = url;
+	}
+
+	public String getRepoRootURL() {
+		return repoRootURL;
+	}
+
+	public void setRepoRootURL(String repoRootURL) {
+		this.repoRootURL = repoRootURL;
+	}
+
+
 	
 	
 }
