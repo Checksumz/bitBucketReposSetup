@@ -1,12 +1,15 @@
 package main.java.bitBucketReposSetup;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayInputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.internal.runners.TestClass;
 
 public class userInputTest {
 
@@ -15,19 +18,29 @@ public class userInputTest {
 	@Before
 	public void berfore() {
 		testClass = new userInput();
-		testClass.getUserInput();
+
 	}
 	
 	@Test
-	public void testRepoRootURL() {
-		System.out.println(testClass.getRepoRootURL());
-		assertTrue(testClass.getRepoRootURL().matches("^(?:http(s)?:\\/\\/)?[\\w.-]+(?:\\.[\\w\\.-]+)[\\w-\\._~:\\/\\?#\\[\\]@!\\$&'\\(\\)\\*\\+,;=\\.]+$"));
+	public void testRepoUrl() {		
+		assertNotNull(testClass.getRepoRootURL());
 	}
 	
 	@Test
-	public void testLocalRepoDir() {	
-		System.out.println(testClass.getLocalRepoDir());
-		assertTrue(testClass.getLocalRepoDir().matches("^[a-zA-Z]:[\\s|*\\s]?.*$"));		
+	public void testMalformedUrl() {		
+//		testClass.createBitbucketProjUrl()
+//		ByteArrayInputStream in = new ByteArrayInputStream("malformedUrl.com".getBytes());
+//		System.setIn(in);
+//		in = new ByteArrayInputStream("malformedUrl.com".getBytes());
+//		System.setIn(in);
+//		in = new ByteArrayInputStream("".getBytes());
+//		System.setIn(in);
+//		createBitbucketProjUrl
+//		assertNotNull("malformed url exception", testClass.getRepoRootURL());
+//		
+		
 	}
+	
+
 
 }

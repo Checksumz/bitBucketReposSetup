@@ -22,6 +22,17 @@ public class userInput {
 	
     private static final Logger logger = LogManager.getLogger(userInput.class);
     
+    public URL createBitbucketProjUrl (String repoRootURL, String bitBucketProjName) {
+		// TODO Auto-generated method stub
+    	try {
+			url = new URL(repoRootURL+"/rest/api/1.0/projects/"+bitBucketProjName+"/repos");
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return url;
+	}
+    
 	public userInput getUserInput() {
 		
 		try(Scanner in = new Scanner(System.in)){
@@ -34,9 +45,9 @@ public class userInput {
 			this.setRepoRootURL(repoRootURL);
 			
 			System.out.println("Please enter name of bitBucket Project :");
-
 			String bitBucketProjName= in.nextLine();
-			 url = new URL(repoRootURL+"/rest/api/1.0/projects/"+bitBucketProjName+"/repos");
+			 
+			this.createBitbucketProjUrl(repoRootURL, bitBucketProjName);
 			 this.setUrl(url);
 			 System.out.println("Please enter name of local dir to create/update the local copy(eg:C:\\Users\\reposTest\\):");
 			 localRepoDir=in.nextLine();
@@ -52,9 +63,9 @@ public class userInput {
 			 
 			 
 			 
-		} catch (MalformedURLException e) {
+		} catch (Exception e) {
 			
-			logger.debug(e.getMessage());
+			logger.debug(e.getStackTrace());
 		}
 		return this;
 	}
