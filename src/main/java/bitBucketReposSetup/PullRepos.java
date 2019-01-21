@@ -76,7 +76,7 @@ public class PullRepos {
 		
 		try(Git git= new Git(localRepo)){
 			
-			System.out.println("git.branchList() "+git.branchList().call().toString());
+	//		System.out.println("git.branchList() "+git.getRepository()branchList().call().toString());
 			
 			try {
 				System.out.println("git.branchList().getRepository()" + 
